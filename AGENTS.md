@@ -116,9 +116,12 @@ screencapture -x /tmp/wechat_sent_check.png
 
 | 模块 | 路径 | 职责 |
 |------|------|------|
-| 核心 Skill 脚本 | `.agents/skills/wechat-send-fixed-message/scripts/send_fixed_message.py` | 微信消息发送的核心实现 |
+| 核心 Skill 脚本 | `.agents/skills/wechat-send-fixed-message/scripts/send_fixed_message.py` | 微信消息发送的核心实现（macOS） |
 | Skill 配置 | `.agents/skills/wechat-send-fixed-message/agents/openai.yaml` | Agent 界面配置 |
 | Skill 文档 | `.agents/skills/wechat-send-fixed-message/SKILL.md` | Skill 使用说明与工作流 |
+| Windows Skill 脚本 | `.agents/skills/wechat-send-fixed-message-win/scripts/send_fixed_message.py` | 微信消息发送（Windows UI Automation 版） |
+| Windows 键盘版 | `.agents/skills/wechat-send-fixed-message-win/scripts/send_fixed_message_kb.py` | 微信消息发送（Windows 键盘模拟版） |
+| Windows Skill 文档 | `.agents/skills/wechat-send-fixed-message-win/SKILL.md` | Windows 版使用说明 |
 | 项目入口 | `main.py` | 项目主入口（待扩展） |
 
 ### 核心函数说明
