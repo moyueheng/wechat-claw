@@ -17,7 +17,7 @@ description: 向指定微信联系人或群发送固定消息（Windows UI Autom
    - 运行 `scripts/send_fixed_message.py`：
 
 ```bash
-uv run python .agents/skills/wechat-send-fixed-message-win/scripts/send_fixed_message.py \
+uv run python .claude/skills/wechat-send-fixed-message-win/scripts/send_fixed_message.py \
   --target "黄旭" \
   --message "你好我是 \"智投助手\""
 ```

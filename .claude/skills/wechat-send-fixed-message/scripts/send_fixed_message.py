@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import random
 import time
 
 import AppKit
@@ -50,6 +51,10 @@ def send_fixed_message(target: str, message: str) -> None:
     paste_text(message)
     time.sleep(0.12)
     key_tap(36, 0)  # Enter send
+
+    # 添加5-10秒随机延迟
+    delay = random.uniform(5, 10)
+    time.sleep(delay)
 
 
 def parse_args() -> argparse.Namespace:
