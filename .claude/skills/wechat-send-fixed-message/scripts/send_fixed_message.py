@@ -31,7 +31,33 @@ def paste_text(text: str) -> None:
     key_tap(9, kCGEventFlagMaskCommand)  # Cmd+V
 
 
+def is_stock_analysis_content(text: str) -> bool:
+    """判断文本是否包含股票分析或投资建议内容"""
+    keywords = [
+        '股票', '股价', '股市', '投资', '买入', '卖出', '持有', '评级',
+        '目标价', '估值', '市盈率', '市净率', '财报', '业绩', '涨停',
+        '跌停', '牛市', '熊市', '多头', '空头', '板块', '行业',
+        '证券', '基金', '期货', '期权', '融资融券', '北向资金',
+        '主力资金', '游资', '机构', '散户', '利好', '利空',
+        '技术分析', '基本面', '消息面', '政策面', '资金面',
+        'K线', '均线', '成交量', 'MACD', 'KDJ', 'RSI',
+        '支撑位', '压力位', '突破', '回调', '反弹', '反转'
+    ]
+
+    text_lower = text.lower()
+    for keyword in keywords:
+        if keyword in text_lower:
+            return True
+
+    return False
+
+
 def send_fixed_message(target: str, message: str) -> None:
+    # 如果是股票分析内容，添加免责声明
+    if is_stock_analysis_content(message):
+        disclaimer = "\n\n⚠️ 免责声明：以上分析基于公开新闻，结论出自AI，内容仅供参考，不构成投资建议。"
+        message = message + disclaimer
+
     apps = AppKit.NSRunningApplication.runningApplicationsWithBundleIdentifier_(
         "com.tencent.xinWeChat"
     )
