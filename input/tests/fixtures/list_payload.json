@@ -1,0 +1,22 @@
+{
+  "code": "1",
+  "message": "success",
+  "data": {
+    "fastNewsList": [
+      {
+        "code": "202603080001",
+        "title": "焦点快讯一",
+        "summary": "第一条摘要",
+        "showTime": "2026-03-08 11:31:00",
+        "realSort": "100"
+      },
+      {
+        "code": "202603080002",
+        "title": "焦点快讯二",
+        "summary": "第二条摘要",
+        "showTime": "2026-03-08 11:35:00",
+        "realSort": "101"
+      }
+    ]
+  }
+}
