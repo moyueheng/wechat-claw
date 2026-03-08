@@ -5,6 +5,7 @@ Windows 微信消息发送工具 - 键盘模拟版
 from __future__ import annotations
 
 import argparse
+import random
 import sys
 import time
 
@@ -137,7 +138,9 @@ def send_fixed_message(target: str, message: str) -> None:
     
     # 9. 发送
     pyautogui.press('enter')
-    time.sleep(0.3)
+    # 添加随机延迟 2-5 秒
+    delay = random.uniform(2, 5)
+    time.sleep(delay)
 
 
 def parse_args() -> argparse.Namespace:

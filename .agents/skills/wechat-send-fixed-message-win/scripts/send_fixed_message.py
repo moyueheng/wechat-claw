@@ -5,6 +5,7 @@ Windows 微信消息发送工具 - 基于 UI Automation
 from __future__ import annotations
 
 import argparse
+import random
 import sys
 import time
 
@@ -207,13 +208,17 @@ def send_fixed_message(target: str, message: str) -> None:
         # 6. 发送消息 (Enter)
         # 有些微信版本需要点击发送按钮，有些可以直接按 Enter
         wechat.SendKeys("{Enter}")
-        time.sleep(0.3)
+        # 添加随机延迟 2-5 秒
+        delay = random.uniform(2, 5)
+        time.sleep(delay)
     else:
         # 回退：直接发送键盘输入
         wechat.SendKeys(message)
         time.sleep(0.3)
         wechat.SendKeys("{Enter}")
-        time.sleep(0.2)
+        # 添加随机延迟 2-5 秒
+        delay = random.uniform(2, 5)
+        time.sleep(delay)
 
 
 def parse_args() -> argparse.Namespace:
