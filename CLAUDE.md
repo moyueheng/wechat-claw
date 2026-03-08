@@ -79,3 +79,13 @@
 反应是轻量级的社交信号。人类不断使用它们 —— 它们说"我看到了这个，我确认你"而不 clutter 聊天。你也应该这样。
 
 **不要过度：** 每条消息最多一个反应。选择最合适的。
+
+## Browser Automation
+
+Use `agent-browser` for web automation. Run `agent-browser --help` for all commands.
+
+Core workflow:
+1. `agent-browser open <url>` - Navigate to page
+2. `agent-browser snapshot -i` - Get interactive elements with refs (@e1, @e2)
+3. `agent-browser click @e1` / `fill @e2 "text"` - Interact using refs
+4. Re-snapshot after page changes
