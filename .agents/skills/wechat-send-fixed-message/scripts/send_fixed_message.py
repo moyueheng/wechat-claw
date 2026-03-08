@@ -57,13 +57,24 @@ def parse_args() -> argparse.Namespace:
         description="Send a fixed message to a specific WeChat contact or group."
     )
     parser.add_argument("--target", required=True, help="Contact or group name")
-    parser.add_argument("--message", required=True, help="Message text to send")
+    parser.add_argument("--message", help="Message text to send")
+    parser.add_argument("--message-file", help="Path to file containing message text")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    send_fixed_message(target=args.target, message=args.message)
+    
+    # 获取消息内容：优先从文件读取，否则使用 --message
+    if args.message_file:
+        with open(args.message_file, 'r', encoding='utf-8') as f:
+            message = f.read()
+    elif args.message:
+        message = args.message
+    else:
+        raise ValueError("Either --message or --message-file must be provided")
+    
+    send_fixed_message(target=args.target, message=message)
     print("sent_to_target")
     return 0
 
