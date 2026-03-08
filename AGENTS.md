@@ -96,10 +96,15 @@ uv run python main.py
 ### 运行 Skill 脚本
 
 ```bash
-# 发送固定消息到指定联系人/群组
+# 发送固定消息到指定联系人/群组（直接指定消息）
 uv run python .agents/skills/wechat-send-fixed-message/scripts/send_fixed_message.py \
   --target "联系人名称" \
   --message "要发送的消息内容"
+
+# 从文件读取消息内容发送
+uv run python .agents/skills/wechat-send-fixed-message/scripts/send_fixed_message.py \
+  --target "联系人名称" \
+  --message-file "/path/to/message.txt"
 ```
 
 ### 发送后截图确认
