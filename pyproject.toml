@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "lark-oapi>=1.5.3",
     "pyobjc-framework-cocoa>=12.1; sys_platform == 'darwin'",
     "pyobjc-framework-quartz>=12.1; sys_platform == 'darwin'",
     "uiautomation>=2.0.18; sys_platform == 'win32'",
