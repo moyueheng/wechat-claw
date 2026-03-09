@@ -110,14 +110,14 @@ input/data/articles/
 **发送方式：**
 运行脚本（每条消息单独发送）：
 ```bash
-uv run --with lark-oapi python .claude/skills/feishu-send-message/scripts/send_message.py \
+uv run --with lark-oapi python .agents/skills/feishu-send-message/scripts/send_message.py \
   --chat-name "{target_name}" \
   --message "消息内容"
 ```
 
 发送给单个飞书用户时：
 ```bash
-uv run --with lark-oapi python .claude/skills/feishu-send-message/scripts/send_message.py \
+uv run --with lark-oapi python .agents/skills/feishu-send-message/scripts/send_message.py \
   --user-name "{target_name}" \
   --message "消息内容"
 ```
