@@ -1,0 +1,4 @@
+interface:
+  display_name: "飞书定向消息发送"
+  short_description: "用飞书 Python SDK 向个人或群发送文本消息"
+  default_prompt: "请使用 $feishu-send-message 向指定飞书个人或群发送一条文本消息，并返回发送结果。"

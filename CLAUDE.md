@@ -89,3 +89,19 @@ Core workflow:
 2. `agent-browser snapshot -i` - Get interactive elements with refs (@e1, @e2)
 3. `agent-browser click @e1` / `fill @e2 "text"` - Interact using refs
 4. Re-snapshot after page changes
+
+## Automation
+
+- `run-news-analysis-loop.sh`：根目录 shell 循环器，支持 `start|stop|status|run-once`
+- 通过 `input/data/state/news-analysis-loop.pid` 管理单实例，避免重复启动后难以停掉
+- `start` 启动后先等待 `INITIAL_DELAY_SECONDS`，随后每隔 `SLEEP_SECONDS` 触发一次 Claude Code 非交互模式
+- 脚本直接调用 `.claude/skills/news-analysis/SKILL.md`，最终报告只允许发送到飞书
+- 自动运行时优先使用 `.env` 中的飞书别名映射解析发送目标；没有映射时直接报错，不回退到微信
+- 以 `--dangerously-skip-permissions` 和 `--tools default` 运行，给 Claude Code 最大权限和全部内置工具
+- “没有新增新闻就不发”的判断交给 `news-analysis` skill 本身处理
+- 日志统一落到 `input/data/state/news-analysis-loop.log`
+
+## Skills Layout
+
+- `.claude/skills` 应为指向 `.agents/skills` 的软链接
+- 新增或调整 skill 时，只维护 `.agents/skills/` 这一份源文件，避免双份漂移
