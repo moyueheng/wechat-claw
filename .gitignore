@@ -1,2 +1,48 @@
 .env
+.env.*
+!.env.example
+!.env.sample
+
+# Python
 *.pyc
+*.pyo
+*.pyd
+*.so
+.python-version
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+build/
+dist/
+coverage/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Runtime state
+*.log
+*.pid
+*.tmp
+input/data/state/news-analysis-loop.log*
+input/data/state/news-analysis-loop.pid

@@ -7,15 +7,17 @@ LOG_FILE="${LOG_DIR}/news-analysis-loop.log"
 PID_FILE="${LOG_DIR}/news-analysis-loop.pid"
 SLEEP_SECONDS="${SLEEP_SECONDS:-1800}"
 INITIAL_DELAY_SECONDS="${INITIAL_DELAY_SECONDS:-0}"
+LOG_MAX_BYTES="${LOG_MAX_BYTES:-10485760}"
+LOG_ROTATE_COUNT="${LOG_ROTATE_COUNT:-5}"
 COMMAND="${1:-start}"
 
 mkdir -p "${LOG_DIR}"
 
 PROMPT="$(cat <<'EOF'
-使用这个 skill `.claude/skills/news-analysis/SKILL.md`。
-最终分析报告只发送到飞书，不要发送到微信。
+使用这个 skill `.agents/skills/news-analysis/SKILL.md`。
+最终分析报告只发送到飞书
 如果 `.env` 中存在可用的飞书别名映射，则优先使用该映射解析发送目标。
-如果没有可用的飞书目标配置，直接报错并结束，不要回退到微信。
+如果没有可用的飞书目标配置，直接报错并结束
 如果没有新增新闻就不要发送任何消息，直接结束任务。
 按时间顺序处理全部待分析新闻，并在每条发送完成后按 skill 要求归档。
 EOF
@@ -26,7 +28,44 @@ log() {
   shift
   local message
   message="$(printf '[%s] [%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "${level}" "$*")"
+  rotate_log_if_needed
   printf '%s\n' "${message}" | tee -a "${LOG_FILE}" >&2
+}
+
+validate_log_rotation_config() {
+  if ! [[ "${LOG_MAX_BYTES}" =~ ^[0-9]+$ ]] || [[ "${LOG_MAX_BYTES}" -le 0 ]]; then
+    echo "LOG_MAX_BYTES must be a positive integer, got: ${LOG_MAX_BYTES}" >&2
+    exit 1
+  fi
+
+  if ! [[ "${LOG_ROTATE_COUNT}" =~ ^[0-9]+$ ]] || [[ "${LOG_ROTATE_COUNT}" -lt 1 ]]; then
+    echo "LOG_ROTATE_COUNT must be an integer >= 1, got: ${LOG_ROTATE_COUNT}" >&2
+    exit 1
+  fi
+}
+
+rotate_log_if_needed() {
+  local current_size
+  local index
+
+  if [[ ! -f "${LOG_FILE}" ]]; then
+    return 0
+  fi
+
+  current_size="$(wc -c <"${LOG_FILE}")"
+  if [[ "${current_size}" -lt "${LOG_MAX_BYTES}" ]]; then
+    return 0
+  fi
+
+  rm -f "${LOG_FILE}.${LOG_ROTATE_COUNT}"
+  for ((index = LOG_ROTATE_COUNT - 1; index >= 1; index--)); do
+    if [[ -f "${LOG_FILE}.${index}" ]]; then
+      mv "${LOG_FILE}.${index}" "${LOG_FILE}.$((index + 1))"
+    fi
+  done
+
+  mv "${LOG_FILE}" "${LOG_FILE}.1"
+  : >"${LOG_FILE}"
 }
 
 require_kimi() {
@@ -85,6 +124,7 @@ run_once() {
   log INFO "log_file=${LOG_FILE}"
   log INFO "pid_file=${PID_FILE}"
   log INFO "initial_delay_seconds=${INITIAL_DELAY_SECONDS} sleep_seconds=${SLEEP_SECONDS}"
+  log INFO "log_max_bytes=${LOG_MAX_BYTES} log_rotate_count=${LOG_ROTATE_COUNT}"
   log INFO "kimi command: kimi --print -p <prompt> --work-dir ${PROJECT_ROOT} --add-dir ${PROJECT_ROOT} --output-format text"
   log INFO "prompt<<EOF"
   while IFS= read -r line; do
@@ -93,6 +133,7 @@ run_once() {
   log INFO "EOF"
 
   cd "${PROJECT_ROOT}"
+  rotate_log_if_needed
   if kimi --print \
     -p "${PROMPT}" \
     --work-dir "${PROJECT_ROOT}" \
@@ -112,6 +153,7 @@ run_once() {
 
 start_loop() {
   require_kimi
+  validate_log_rotation_config
   ensure_single_instance
   write_pid_file
 
@@ -209,6 +251,7 @@ case "${COMMAND}" in
     ;;
   run-once)
     require_kimi
+    validate_log_rotation_config
     run_once
     ;;
   *)

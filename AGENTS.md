@@ -102,6 +102,7 @@ Core workflow:
 - 以 `--print --output-format text` 运行；`--print` 会隐式启用 `--yolo`
 - 节奏可通过 `INITIAL_DELAY_SECONDS` 和 `SLEEP_SECONDS` 覆盖
 - 日志路径：`input/data/state/news-analysis-loop.log`
+- 日志由脚本内建按大小轮转；默认 `LOG_MAX_BYTES=10485760`、`LOG_ROTATE_COUNT=5`，滚动后为 `news-analysis-loop.log.1` 到 `.5`
 - `scripts/feishu_ws_probe.py`：飞书机器人长链接探针/监听脚本；默认常驻运行直到收到 `SIGINT`/`SIGTERM`，传 `--duration-seconds` 时退化为一次性限时探测
 - 该脚本依赖 `lark-oapi`，已写入根目录 `pyproject.toml`；缺依赖时会直接返回明确错误，而不是在导入阶段崩溃
 

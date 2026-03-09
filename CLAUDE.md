@@ -100,6 +100,7 @@ Core workflow:
 - 以 `--print --output-format text` 运行；`--print` 会隐式启用 `--yolo`
 - “没有新增新闻就不发”的判断交给 `news-analysis` skill 本身处理
 - 日志统一落到 `input/data/state/news-analysis-loop.log`
+- 日志由脚本内建按大小轮转；默认 `LOG_MAX_BYTES=10485760`、`LOG_ROTATE_COUNT=5`，滚动文件为 `news-analysis-loop.log.1` 到 `.5`
 - `scripts/feishu_ws_probe.py`：飞书机器人长链接脚本，默认持续保持 websocket 直到收到 `SIGINT`/`SIGTERM`；传 `--duration-seconds` 时用于限时探测
 - 该脚本依赖 `lark-oapi`，缺依赖时会输出明确错误 JSON；不要再把它当 20 秒自动退出的临时 probe
 
