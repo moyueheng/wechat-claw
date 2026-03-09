@@ -102,6 +102,8 @@ Core workflow:
 - 以 `--dangerously-skip-permissions` 和 `--tools default` 运行，不限制工具集
 - 节奏可通过 `INITIAL_DELAY_SECONDS` 和 `SLEEP_SECONDS` 覆盖
 - 日志路径：`input/data/state/news-analysis-loop.log`
+- `scripts/feishu_ws_probe.py`：飞书机器人长链接探针/监听脚本；默认常驻运行直到收到 `SIGINT`/`SIGTERM`，传 `--duration-seconds` 时退化为一次性限时探测
+- 该脚本依赖 `lark-oapi`，已写入根目录 `pyproject.toml`；缺依赖时会直接返回明确错误，而不是在导入阶段崩溃
 
 ## Skills Layout
 

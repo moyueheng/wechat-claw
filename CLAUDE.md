@@ -100,6 +100,8 @@ Core workflow:
 - 以 `--dangerously-skip-permissions` 和 `--tools default` 运行，给 Claude Code 最大权限和全部内置工具
 - “没有新增新闻就不发”的判断交给 `news-analysis` skill 本身处理
 - 日志统一落到 `input/data/state/news-analysis-loop.log`
+- `scripts/feishu_ws_probe.py`：飞书机器人长链接脚本，默认持续保持 websocket 直到收到 `SIGINT`/`SIGTERM`；传 `--duration-seconds` 时用于限时探测
+- 该脚本依赖 `lark-oapi`，缺依赖时会输出明确错误 JSON；不要再把它当 20 秒自动退出的临时 probe
 
 ## Skills Layout
 
