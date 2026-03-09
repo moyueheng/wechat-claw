@@ -94,10 +94,10 @@ Core workflow:
 
 - `run-news-analysis-loop.sh`：根目录 shell 循环器，支持 `start|stop|status|run-once`
 - 通过 `input/data/state/news-analysis-loop.pid` 管理单实例，避免重复启动后难以停掉
-- `start` 启动后先等待 `INITIAL_DELAY_SECONDS`，随后每隔 `SLEEP_SECONDS` 触发一次 Claude Code 非交互模式
+- `start` 启动后先等待 `INITIAL_DELAY_SECONDS`，随后每隔 `SLEEP_SECONDS` 触发一次 `kimi --print` 非交互模式
 - 脚本直接调用 `.claude/skills/news-analysis/SKILL.md`，最终报告只允许发送到飞书
 - 自动运行时优先使用 `.env` 中的飞书别名映射解析发送目标；没有映射时直接报错，不回退到微信
-- 以 `--dangerously-skip-permissions` 和 `--tools default` 运行，给 Claude Code 最大权限和全部内置工具
+- 以 `--print --output-format text` 运行；`--print` 会隐式启用 `--yolo`
 - “没有新增新闻就不发”的判断交给 `news-analysis` skill 本身处理
 - 日志统一落到 `input/data/state/news-analysis-loop.log`
 - `scripts/feishu_ws_probe.py`：飞书机器人长链接脚本，默认持续保持 websocket 直到收到 `SIGINT`/`SIGTERM`；传 `--duration-seconds` 时用于限时探测

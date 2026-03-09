@@ -29,9 +29,9 @@ log() {
   printf '%s\n' "${message}" | tee -a "${LOG_FILE}" >&2
 }
 
-require_claude() {
-  if ! command -v claude >/dev/null 2>&1; then
-    echo "claude command not found" >&2
+require_kimi() {
+  if ! command -v kimi >/dev/null 2>&1; then
+    echo "kimi command not found" >&2
     exit 1
   fi
 }
@@ -85,7 +85,7 @@ run_once() {
   log INFO "log_file=${LOG_FILE}"
   log INFO "pid_file=${PID_FILE}"
   log INFO "initial_delay_seconds=${INITIAL_DELAY_SECONDS} sleep_seconds=${SLEEP_SECONDS}"
-  log INFO "claude command: claude -p <prompt> --add-dir ${PROJECT_ROOT} --dangerously-skip-permissions --tools default --output-format text"
+  log INFO "kimi command: kimi --print -p <prompt> --work-dir ${PROJECT_ROOT} --add-dir ${PROJECT_ROOT} --output-format text"
   log INFO "prompt<<EOF"
   while IFS= read -r line; do
     log INFO "prompt| ${line}"
@@ -93,10 +93,10 @@ run_once() {
   log INFO "EOF"
 
   cd "${PROJECT_ROOT}"
-  if claude -p "${PROMPT}" \
+  if kimi --print \
+    -p "${PROMPT}" \
+    --work-dir "${PROJECT_ROOT}" \
     --add-dir "${PROJECT_ROOT}" \
-    --dangerously-skip-permissions \
-    --tools default \
     --output-format text >>"${LOG_FILE}" 2>&1; then
     exit_code=0
   else
@@ -111,7 +111,7 @@ run_once() {
 }
 
 start_loop() {
-  require_claude
+  require_kimi
   ensure_single_instance
   write_pid_file
 
@@ -208,7 +208,7 @@ case "${COMMAND}" in
     status_loop
     ;;
   run-once)
-    require_claude
+    require_kimi
     run_once
     ;;
   *)
