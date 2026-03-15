@@ -46,3 +46,9 @@ Thumbs.db
 *.tmp
 input/data/state/news-analysis-loop.log*
 input/data/state/news-analysis-loop.pid
+
+# Data and runtime files
+input/data/raw/
+input/data/state/*.json
+input/data/archived/
+memory/
