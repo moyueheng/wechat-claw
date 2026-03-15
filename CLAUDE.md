@@ -92,7 +92,22 @@ Core workflow:
 
 ## Automation
 
+### macOS / Linux
+
 - `run-news-analysis-loop.sh`：根目录 shell 循环器，支持 `start|stop|status|run-once`
+
+### Windows
+
+- `scripts/win/start.bat`：双击启动全套服务（新闻采集 + 新闻分析）
+- `scripts/win/stop.bat`：双击停止所有服务
+- `scripts/win/run_analysis.py`：Windows 版新闻分析服务主程序（被 start.bat 调用，勿直接运行）
+- `scripts/win/使用说明.md`：Windows 用户使用文档
+
+Windows 版本特性：
+- 同样支持 PID 文件单实例管理
+- 同样支持日志轮转
+- 同样通过 `.env` 配置飞书
+- 间隔时间可通过环境变量 `SLEEP_SECONDS` 修改（默认 1800 秒）
 - 通过 `input/data/state/news-analysis-loop.pid` 管理单实例，避免重复启动后难以停掉
 - `start` 启动后先等待 `INITIAL_DELAY_SECONDS`，随后每隔 `SLEEP_SECONDS` 触发一次 `kimi --print` 非交互模式
 - 脚本直接调用 `.claude/skills/news-analysis/SKILL.md`，最终报告只允许发送到飞书

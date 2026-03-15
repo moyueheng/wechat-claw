@@ -94,7 +94,22 @@ Core workflow:
 
 ## Automation
 
+### macOS / Linux
+
 - `run-news-analysis-loop.sh`：新闻分析微信群发的根目录 shell 循环脚本
+
+### Windows
+
+- `scripts/win/start.bat`：双击启动全套服务（新闻采集 + 新闻分析）
+- `scripts/win/stop.bat`：双击停止所有服务  
+- `scripts/win/run_analysis.py`：Windows 版新闻分析服务实现（被 start.bat 调用）
+- `scripts/win/使用说明.md`：Windows 用户使用文档
+
+Windows 版本与 shell 脚本功能对齐：
+- PID 文件单实例管理：`input/data/state/news-analysis-loop.pid`
+- 日志轮转：`LOG_MAX_BYTES` 默认 10MB，`LOG_ROTATE_COUNT` 默认 5
+- 间隔时间：`SLEEP_SECONDS` 默认 1800 秒（30 分钟）
+- 同样使用 `.env` 配置飞书，同样只发送到飞书
 - 支持 `start|stop|status|run-once`，通过 `input/data/state/news-analysis-loop.pid` 做单实例管理
 - `start` 启动后先等待 `INITIAL_DELAY_SECONDS`，然后每隔 `SLEEP_SECONDS` 调用一次 `kimi --print` 非交互模式
 - 最终分析报告只允许发送到飞书，不回退到微信
